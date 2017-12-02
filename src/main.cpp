@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
+ * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -29,55 +30,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
+#ifdef QT_QML_DEBUG
+#include <QtQuick>
+#endif
+
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QtQml>
-#include <QThread>
-#include <QObject>
-#include <QAbstractListModel>
-#include <QDebug>
-#include <QThread>
-#include <QMetaType>
-#include <QQmlContext>
-#ifdef HAS_BOOSTER
-#include <MDeclarativeCache>
-#endif
 
 #include "utils.h"
 
-#ifdef HAS_BOOSTER
-Q_DECL_EXPORT
-#endif
 int main(int argc, char **argv)
 {
-    QGuiApplication *application;
-    QQuickView *view;
-#ifdef HAS_BOOSTER
-    application = MDeclarativeCache::qApplication(argc, argv);
-    view = MDeclarativeCache::qQuickView();
-#else
-    qWarning() << Q_FUNC_INFO << "Warning! Running without booster. This may be a bit slower.";
-    QGuiApplication stackApp(argc, argv);
-    QQuickView stackView;
-    application = &stackApp;
-    view = &stackView;
-#endif
+    QGuiApplication app(argc, argv);
+    app.setOrganizationName("NemoMobile");
+    app.setApplicationName("glacier-filemuncher");
 
-    QQmlContext *c = view->rootContext();
-    c->setContextProperty("fileBrowserUtils", new Utils);
+    QQmlApplicationEngine* engine = new QQmlApplicationEngine(QUrl::fromLocalFile("/usr/share/glacier-filemuncher/qml/main.qml"));
+    QObject *topLevel = engine->rootObjects().value(0);
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
 
-    if (QFile::exists("main.qml"))
-        view->setSource(QUrl::fromLocalFile("main.qml"));
-    else
-        view->setSource(QUrl("qrc:/qml/main.qml"));
+    Utils *utils = new Utils();
 
-    if (QCoreApplication::arguments().contains("-fullscreen")) {
-        qDebug() << Q_FUNC_INFO << "Starting in fullscreen mode";
-        view->showFullScreen();
-    } else {
-        qDebug() << Q_FUNC_INFO << "Starting in windowed mode";
-        view->show();
-    }
+    engine->rootContext()->setContextProperty("__window", window);
+    engine->rootContext()->setContextProperty("fileBrowserUtils", utils);
 
-    return application->exec();
+    // TODO: we could do with a plugin to access QDesktopServices paths
+    engine->rootContext()->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    engine->rootContext()->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+
+    window->setTitle(QObject::tr("Files browser"));
+    window->showFullScreen();
+
+    return app.exec();
 }

@@ -29,22 +29,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.thumbnailer 1.0
 
-PageStackWindow {
+ApplicationWindow {
     id: window
 
     Component.onCompleted: {
-        var paths = fileBrowserUtils.pathsToHome();
+        /*var path = fileBrowserUtils.pathsToHome()
         console.log(paths)
         for (var i = 0; i < paths.length; ++i) {
             var path = paths[i]
             console.log(path)
             cdInto(path, true)
         }
-        console.log(paths)
+        console.log(paths)*/
+        cdInto("/home/nemo/",true)
     }
 
     // TODO: immediate should not be a bool, should take a hash of params.

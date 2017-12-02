@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
+ * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -29,32 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
 
-Rectangle {
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
+ListViewItemWithActions {
     id: delegate
     property bool navigationMode: true
     property bool selected: false
+
+    label: model.fileName
+    icon: model.isDir ? "image://theme/folder-o" : "image://theme/file-o"
+
+    showNext: isDir
+
     width: parent.width
-    height: UiConstants.ListItemHeightDefault
-    color: selected ? "#800000FF" : "transparent"
-
-    signal clicked()
-    signal pressAndHold()
-
-    Image {
-        id: icon
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: UiConstants.DefaultMargin
-        source: model.iconSource
-        asynchronous: true
-        height: UiConstants.ListItemHeightSmall
-        width: UiConstants.ListItemHeightSmall
-        sourceSize: Qt.size(width, height)
-        clip: true
-    }
+    height: Theme.itemHeightSmall
 
     Loader {
         anchors { bottom: icon.bottom; right: icon.right }
@@ -67,7 +60,7 @@ Rectangle {
         id: permissions
 
         FilePermissionIndicator {
-            pixelSize: fileName.font.pixelSize / 1.7
+            pixelSize: Theme.fontSizeTiny
             isReadable: model.isReadable
             isWritable: model.isWritable
             isExecutable: model.isExecutable
@@ -75,49 +68,15 @@ Rectangle {
         }
     }
 
-    Label {
-        id: fileName
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: icon.right
-        anchors.right: model.isFile ? fileSize.left : drillDown.left
-        anchors.leftMargin: UiConstants.DefaultMargin
-        anchors.rightMargin: UiConstants.DefaultMargin
-        text: model.fileName
-        wrapMode: Text.NoWrap
-        elide: Text.ElideRight
-    }
-
     Text {
         id: fileSize
-        color: "#8e8e8e"
+        color: Theme.textColor
         visible: model.isFile
-        font: UiConstants.SubtitleFont
+        font: Theme.fontFamily
         text: model.fileSize
         anchors.right: parent.right
-        anchors.rightMargin: UiConstants.DefaultMargin
+        anchors.rightMargin: Theme.itemSpacingMedium
         anchors.verticalCenter: parent.verticalCenter
-    }
-
-    Image {
-        id: drillDown
-        visible: model.isDir && navigationMode
-        source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-        anchors.right: parent.right;
-        anchors.rightMargin: UiConstants.DefaultMargin
-        anchors.verticalCenter: parent.verticalCenter
-        asynchronous: true
-        cache: true
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            delegate.clicked()
-        }
-
-        onPressAndHold: {
-            delegate.pressAndHold()
-        }
     }
 }
 

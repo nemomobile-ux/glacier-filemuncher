@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
+ * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -29,10 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
+import Nemo.Dialogs 1.0
+
 import org.nemomobile.folderlistmodel 1.0
-import org.nemomobile.qmlfilemuncher 1.0
+import org.nemomobile.filemuncher 1.0
 
 Page {
     id: page
@@ -41,6 +48,28 @@ Page {
     property string selectedFile
     property string selectedFilePath
     property int selectedRow
+
+    headerTools:  HeaderToolsLayout {
+        title: qsTr("File manager")
+
+        tools: [
+            ToolButton{
+                iconSource: "image://theme/chevron-left"
+                onClicked: pageStack.pop()
+                visible: !page.isRootDirectory
+            },
+            ToolButton {
+                iconSource: "image://theme/refresh"
+                onClicked: dirModel.refresh()
+            },
+            ToolButton {
+                iconSource: "image://theme/bars"
+                onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
+            }
+        ]
+        drawerLevels: []
+    }
+
 
     Rectangle {
         id: header
@@ -75,16 +104,11 @@ Page {
         }
     }
 
-    ScrollDecorator {
-        flickableItem: fileList
-    }
-
     ListView {
         id: fileList
-        anchors.top: header.bottom
-        anchors.bottom: page.bottom
-        anchors.left: page.left
-        anchors.right: page.right
+        width: parent.width
+        height: parent.height
+        anchors.fill: parent
         clip: true
 
         model: FolderListModel {
@@ -96,55 +120,25 @@ Page {
                     window.cdInto(model.filePath)
                 else {
                     page.selectedFilePath = model.filePath
-                    openFileDialog.open()
+                    openFileDialog.visible = true
                 }
             }
-
-            onPressAndHold: {
-                page.selectedFile = model.filePath;
-                page.selectedRow = model.index;
-                console.log("tapping on " + page.selectedRow)
-                if (tapMenu.status == DialogStatus.Closed)
-                    tapMenu.open()
-                else
-                    tapMenu.close()
-            }
         }
     }
 
-    ViewPlaceholder {
-        text: "No files here"
-        enabled: !dirModel.awaitingResults && fileList.count == 0 ? true : false
+    Label {
+        text: qsTr("No files here")
+        anchors.centerIn: parent
+        visible: !dirModel.awaitingResults && fileList.count == 0 ? true : false
     }
 
-    BusyIndicator {
+    Spinner {
         anchors.centerIn: parent
         visible: dirModel.awaitingResults && fileList.count == 0 ? true : false
-        platformStyle: BusyIndicatorStyle {
-            size: "large"
-        }
-    }
-
-    tools: ToolBarLayout {
-        ToolIcon {
-            iconId: "icon-m-toolbar-back"
-            onClicked: pageStack.pop()
-            visible: !page.isRootDirectory
-        }
-
-        ToolIcon {
-            iconId: "icon-m-toolbar-refresh"
-            onClicked: dirModel.refresh()
-        }
-
-        ToolIcon {
-            iconId: "icon-m-toolbar-view-menu"
-            onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
-        }
     }
 
     // TODO: create menus only when needed, and share between pages
-    Menu {
+    /*Menu {
         id: pageMenu
         MenuLayout {
                 MenuItem { text: "Delete items"; onClicked: {
@@ -179,9 +173,9 @@ Page {
                 }
             }
         }
-    }
+    }*/
 
-    Menu {
+    /*Menu {
         id: tapMenu
         MenuLayout {
             MenuItem {
@@ -202,28 +196,31 @@ Page {
                 onClicked: dirModel.rm(selectedFile)
             }
         }
-    }
+    }*/
 
     QueryDialog {
         id: openFileDialog
-        message: "Open file: " + page.selectedFilePath
-        acceptButtonText: "Yes"
-        rejectButtonText: "No"
+        headingText: qsTr("Open file")
+        subLabelText: page.selectedFilePath
+        acceptText: qsTr("Yes")
+        cancelText: qsTr("No")
         onAccepted: {
             Qt.openUrlExternally("file://" + page.selectedFilePath )
         }
+        visible: false
     }
 
     QueryDialog {
         id: errorDialog
-        acceptButtonText: "Ok"
+        acceptText: qsTr("Ok")
+        visible: false
     }
 
     Connections {
         target: dirModel
         onError: {
-            errorDialog.titleText = errorTitle
-            errorDialog.message = errorMessage
+            errorDialog.headingText = errorTitle
+            errorDialog.subLabelText = errorMessage
             errorDialog.open()
         }
     }
