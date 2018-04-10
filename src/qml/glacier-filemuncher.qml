@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
+ * Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -35,7 +36,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-import org.nemomobile.thumbnailer 1.0
+import Nemo.Thumbnailer 1.0
 
 ApplicationWindow {
     id: window
@@ -49,7 +50,7 @@ ApplicationWindow {
             cdInto(path, true)
         }
         console.log(paths)*/
-        cdInto("/home/nemo/",true)
+        cdInto(homeDirectory,true)
     }
 
     // TODO: immediate should not be a bool, should take a hash of params.

@@ -42,9 +42,14 @@ DISTFILES += \
     src/qml/api/FileListDelegate.qml \
     src/qml/api/FilePermissionIndicator.qml \
     src/qml/prohibitionsign.svg \
-    src/qml/main.qml \
     src/qml/InputSheet.qml \
     src/qml/DirectoryPage.qml \
     src/qml/DetailViewSheet.qml \
     src/qml/FilePickerSheet.qml \
-    rpm/glacier-filemuncher.spec
+    rpm/glacier-filemuncher.spec \
+    src/qml/glacier-filemuncher.qml
+
+CONFIG += link_pkgconfig
+PKGCONFIG += glacierapp
+
+LIBS += -lglacierapp

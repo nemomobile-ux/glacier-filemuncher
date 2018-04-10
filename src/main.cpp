@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2017-2018 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -35,32 +35,35 @@
 #endif
 
 #include <QGuiApplication>
-#include <QQuickView>
+#include <QQuickWindow>
+#include <QQuickItem>
 #include <QtQml>
+
+#include <glacierapp.h>
 
 #include "utils.h"
 
 int main(int argc, char **argv)
 {
-    QGuiApplication app(argc, argv);
-    app.setOrganizationName("NemoMobile");
-    app.setApplicationName("glacier-filemuncher");
+    QGuiApplication *app = GlacierApp::app(argc, argv);
+    app->setOrganizationName("NemoMobile");
+    app->setApplicationName("glacier-filemuncher");
 
-    QQmlApplicationEngine* engine = new QQmlApplicationEngine(QUrl::fromLocalFile("/usr/share/glacier-filemuncher/qml/main.qml"));
-    QObject *topLevel = engine->rootObjects().value(0);
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+    QQmlApplicationEngine *engine = GlacierApp::engine(app);
+    QQmlContext *context = engine->rootContext();
 
     Utils *utils = new Utils();
 
-    engine->rootContext()->setContextProperty("__window", window);
-    engine->rootContext()->setContextProperty("fileBrowserUtils", utils);
+    context->setContextProperty("fileBrowserUtils", utils);
 
     // TODO: we could do with a plugin to access QDesktopServices paths
-    engine->rootContext()->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    engine->rootContext()->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    context->setContextProperty("homeDirectory", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    context->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    context->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 
+    QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Files browser"));
-    window->showFullScreen();
+    window->setIcon(QIcon("/usr/share/glacier-filemuncher/images/icon-app-filemanager.png"));
 
-    return app.exec();
+    return app->exec();
 }

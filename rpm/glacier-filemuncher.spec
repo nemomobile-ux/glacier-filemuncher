@@ -6,7 +6,7 @@ Name:       glacier-filemuncher
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Summary:    File Manager for Nemo
-Version:    0.2.0
+Version:    0.2.1
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -16,11 +16,13 @@ Source0:    %{name}-%{version}.tar.bz2
 Requires:   qt-components-qt5
 Requires:   nemo-qml-plugin-thumbnailer-qt5
 Requires:   nemo-qml-plugin-folderlistmodel
+Requires:   libglacierapp >= 0.2
 
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
+BuildRequires:  pkgconfig(glacierapp) >= 0.2
 BuildRequires:  desktop-file-utils
 
 %description
