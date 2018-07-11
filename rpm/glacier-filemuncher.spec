@@ -16,13 +16,14 @@ Source0:    %{name}-%{version}.tar.bz2
 Requires:   qt-components-qt5
 Requires:   nemo-qml-plugin-thumbnailer-qt5
 Requires:   nemo-qml-plugin-folderlistmodel
-Requires:   libglacierapp >= 0.2
+Requires:   libglacierapp
+Requires:   mapplauncherd-booster-nemomobile
 
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
-BuildRequires:  pkgconfig(glacierapp) >= 0.2
+BuildRequires:  pkgconfig(glacierapp)
 BuildRequires:  desktop-file-utils
 
 %description
