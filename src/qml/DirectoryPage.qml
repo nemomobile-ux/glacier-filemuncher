@@ -50,14 +50,10 @@ Page {
     property int selectedRow
 
     headerTools:  HeaderToolsLayout {
+        id: header
         title: qsTr("File manager")
 
         tools: [
-            ToolButton{
-                iconSource: "image://theme/chevron-left"
-                onClicked: pageStack.pop()
-                visible: !page.isRootDirectory
-            },
             ToolButton {
                 iconSource: "image://theme/refresh"
                 onClicked: dirModel.refresh()
@@ -65,22 +61,43 @@ Page {
             ToolButton {
                 iconSource: "image://theme/bars"
                 onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
+            },
+            ToolButton{
+                iconSource: "image://theme/chevron-left"
+                onClicked: pageStack.pop()
+                visible: !page.isRootDirectory
             }
         ]
-        drawerLevels: []
+        drawerLevels: [
+            Button {
+                text: qsTr("Create directory")
+                onClicked: {
+                    var component = Qt.createComponent("InputSheet.qml");
+                    if (component.status == Component.Ready) {
+                        // TODO: error handling
+                        var newFolder = component.createObject(page, {"title": qsTr("Enter new folder name")});
+                        pageStack.push(newFolder)
+                        newFolder.accepted.connect(function() {
+                            var folderName = newFolder.inputText
+                            dirModel.mkdir(folderName)
+                            pageStack.pop();
+                            cdInto(path+"/"+folderName)
+                        });
+                    }
+                }
+            }
+
+        ]
     }
 
 
     Rectangle {
-        id: header
-        height: window.inPortrait ? 72 : 0
-        visible: window.inPortrait ? true : false
-        color: "#EA650A"
+        id: dirName
+        height: Theme.itemHeightLarge
+        color: Theme.accentColor
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-
-        property alias content: othercontent.children
 
         Item {
             id: othercontent
@@ -98,7 +115,7 @@ Page {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             smooth: true
-            color: "white"
+            color: Theme.textColor
             text: dirModel.path
             elide: Text.ElideLeft
         }
@@ -107,14 +124,21 @@ Page {
     ListView {
         id: fileList
         width: parent.width
-        height: parent.height
-        anchors.fill: parent
+        height: parent.height - dirName.height - Theme.itemSpacingMedium
+
+        anchors{
+            top: dirName.bottom
+            left: parent.left
+            topMargin: Theme.itemSpacingMedium
+        }
+
         clip: true
 
         model: FolderListModel {
             id: dirModel
         }
         delegate: FileListDelegate {
+            icon: formatIcon(model)
             onClicked: {
                 if (model.isDir)
                     window.cdInto(model.filePath)
@@ -122,6 +146,21 @@ Page {
                     page.selectedFilePath = model.filePath
                     openFileDialog.visible = true
                 }
+            }
+            onWhantRemove: {
+                removeFileDialog.subLabelText = file
+                removeFileDialog.visible = true
+            }
+
+            onWhantInfo: {
+                var component = Qt.createComponent("DetailViewSheet.qml");
+                if (component.status == Component.Ready) {
+                    // TODO: error handling
+                    var detailsSheet = component.createObject(page, {"model": model});
+                    pageStack.push(detailsSheet)
+                }
+
+                console.log(component.errorString())
             }
         }
     }
@@ -156,22 +195,6 @@ Page {
                     }
                 }
             }
-            MenuItem {
-                text: "Create new folder"
-                onClicked: {
-                    var component = Qt.createComponent("InputSheet.qml");
-                    if (component.status == Component.Ready) {
-                        // TODO: error handling
-                        var newFolder = component.createObject(page, {"title": "Enter new folder name"});
-                        newFolder.accepted.connect(function() {
-                            var folderName = newFolder.inputText
-                            console.log("Creating new folder " + folderName)
-                            dirModel.mkdir(folderName)
-                        });
-                        newFolder.open()
-                    }
-                }
-            }
         }
     }*/
 
@@ -190,11 +213,6 @@ Page {
                     }
                 }
             }
-
-            MenuItem {
-                text: "Delete"
-                onClicked: dirModel.rm(selectedFile)
-            }
         }
     }*/
 
@@ -206,6 +224,18 @@ Page {
         cancelText: qsTr("No")
         onAccepted: {
             Qt.openUrlExternally("file://" + page.selectedFilePath )
+        }
+        visible: false
+    }
+
+
+    QueryDialog {
+        id: removeFileDialog
+        headingText: qsTr("Remove")
+        acceptText: qsTr("Yes")
+        cancelText: qsTr("No")
+        onAccepted: {
+            dirModel.rm(subLabelText);
         }
         visible: false
     }
@@ -224,6 +254,5 @@ Page {
             errorDialog.open()
         }
     }
-
 }
 

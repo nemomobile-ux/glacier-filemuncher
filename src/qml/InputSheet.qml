@@ -36,32 +36,58 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-import com.nokia.meego 2.0
-
-Sheet {
+Page {
     id: sheet
-    property alias title: headerLabel.text
+    property alias title: header.title
+    property alias subTitle: headerLabel.text
     property alias inputText: labelField.text
 
-    acceptButtonText: "Ok"
-    rejectButtonText: "Cancel"
+    signal accepted();
 
-    content: Column {
-        spacing: UiConstants.DefaultMargin
-        anchors.fill: parent
-        anchors.margins: UiConstants.DefaultMargin
+    headerTools:  HeaderToolsLayout {
+        id: header
+    }
 
-        Label {
-            id: headerLabel
+    Label {
+        id: headerLabel
+    }
+
+    TextField {
+        id: labelField
+        width: parent.width
+
+        anchors.top: headerLabel.bottom
+
+        Keys.onReturnPressed: {
+            dummy.focus = true
         }
-        TextField {
-            id: labelField
-            width: parent.width
-            Keys.onReturnPressed: {
-                platformCloseSoftwareInputPanel()
-                dummy.focus = true
-            }
+    }
+
+    Button {
+        id: cancel
+        width: parent.width / 2
+        height: Theme.itemHeightLarge
+        text: qsTr("Cancel")
+        anchors {
+            left: parent.left
+            bottom: parent.bottom
         }
-        Item { id: dummy }
+        onClicked: {
+            pageStack.pop()
+        }
+    }
+
+    Button {
+        id: accept
+        width: parent.width / 2
+        height: Theme.itemHeightLarge
+        text: qsTr("Ok")
+        anchors {
+            left: cancel.right
+            bottom: parent.bottom
+        }
+        onClicked: {
+            accepted()
+        }
     }
 }

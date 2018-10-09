@@ -41,30 +41,60 @@ ListViewItemWithActions {
     property bool navigationMode: true
     property bool selected: false
 
-    label: model.fileName
-    icon: model.isDir ? "image://theme/folder-o" : "image://theme/file-o"
+    signal whantRemove(string file)
+    signal whantInfo(var model)
 
+    label: model.fileName
     showNext: isDir
 
     width: parent.width
-    height: Theme.itemHeightSmall
+    height: Theme.itemHeightLarge
 
-    Loader {
-        anchors { bottom: icon.bottom; right: icon.right }
-        sourceComponent: !model.isReadable || !model.isWritable
-                         || (model.isDir && !model.isExecutable)
-                         ? permissions : undefined
-    }
+    actions: Rectangle{
+        id: itemActions
+        height: Theme.itemHeightLarge
+        width: height*2
 
-    Component {
-        id: permissions
+        color: "transparent"
 
-        FilePermissionIndicator {
-            pixelSize: Theme.fontSizeTiny
-            isReadable: model.isReadable
-            isWritable: model.isWritable
-            isExecutable: model.isExecutable
-            isDir: model.isDir
+        Image{
+            id: removeButton
+            width: parent.height*0.6
+            height: width
+
+            source: "image://theme/trash"
+
+            anchors{
+                top: parent.top
+                topMargin: parent.height*0.2
+                left: parent.left
+                leftMargin: parent.height*0.2
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: whantRemove(model.filePath)
+            }
+        }
+
+        Image{
+            id: infoButton
+            width: parent.height*0.6
+            height: width
+
+            source: "image://theme/info"
+
+            anchors{
+                top: parent.top
+                topMargin: parent.height*0.2
+                left: removeButton.right
+                leftMargin: parent.height*0.4
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: whantInfo(model)
+            }
         }
     }
 
@@ -74,9 +104,11 @@ ListViewItemWithActions {
         visible: model.isFile
         font: Theme.fontFamily
         text: model.fileSize
-        anchors.right: parent.right
-        anchors.rightMargin: Theme.itemSpacingMedium
-        anchors.verticalCenter: parent.verticalCenter
+        anchors{
+            right: parent.right
+            rightMargin: Theme.itemSpacingMedium
+            verticalCenter: parent.verticalCenter
+        }
     }
 }
 

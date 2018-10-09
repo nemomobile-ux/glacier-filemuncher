@@ -13,7 +13,7 @@ License:    BSD
 URL:        https://github.com/nemomobile-ux/glacier-filemuncher
 Source0:    %{name}-%{version}.tar.bz2
 
-Requires:   qt-components-qt5
+Requires:   qt5-qtquickcontrols-nemo
 Requires:   nemo-qml-plugin-thumbnailer-qt5
 Requires:   nemo-qml-plugin-folderlistmodel
 Requires:   libglacierapp

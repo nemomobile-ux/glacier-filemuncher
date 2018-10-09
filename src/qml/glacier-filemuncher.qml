@@ -41,16 +41,9 @@ import Nemo.Thumbnailer 1.0
 ApplicationWindow {
     id: window
 
-    Component.onCompleted: {
-        /*var path = fileBrowserUtils.pathsToHome()
-        console.log(paths)
-        for (var i = 0; i < paths.length; ++i) {
-            var path = paths[i]
-            console.log(path)
-            cdInto(path, true)
-        }
-        console.log(paths)*/
-        cdInto(homeDirectory,true)
+    initialPage: DirectoryPage{
+        path: homeDirectory
+        isRootDirectory: true
     }
 
     // TODO: immediate should not be a bool, should take a hash of params.
@@ -65,5 +58,25 @@ ApplicationWindow {
         } else {
             console.log("cdInto: error: " + component.errorString());
         }
+    }
+
+/*format icons for some file types*/
+    function formatIcon(object)
+    {
+        if(object.isDir) {
+            return "image://theme/folder-o"
+        }
+
+        if(object.mimeType.slice(0, 6) === "image/") {
+            return "image://nemoThumbnail/"+object.fileName
+        }
+
+        if(object.mimeType === "application/x-rpm") {
+            return "image://theme/box"
+        }
+
+        console.log(object.mimeType)
+
+        return "image://theme/file-o"
     }
 }

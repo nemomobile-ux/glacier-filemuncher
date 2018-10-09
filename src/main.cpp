@@ -41,8 +41,6 @@
 
 #include <glacierapp.h>
 
-#include "utils.h"
-
 Q_DECL_EXPORT  int main(int argc, char **argv)
 {
     QGuiApplication *app = GlacierApp::app(argc, argv);
@@ -51,10 +49,6 @@ Q_DECL_EXPORT  int main(int argc, char **argv)
 
     QQmlApplicationEngine *engine = GlacierApp::engine(app);
     QQmlContext *context = engine->rootContext();
-
-    Utils *utils = new Utils();
-
-    context->setContextProperty("fileBrowserUtils", utils);
 
     // TODO: we could do with a plugin to access QDesktopServices paths
     context->setContextProperty("homeDirectory", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));

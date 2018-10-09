@@ -29,11 +29,9 @@ desktop.path = /usr/share/applications
 INSTALLS += desktop
 
 # Input
-SOURCES += src/main.cpp \
-    src/utils.cpp
+SOURCES += src/main.cpp
 
-HEADERS += \
-    src/utils.h
+HEADERS +=
 
 CONFIG += link_pkgconfig
 

@@ -36,15 +36,11 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-import FBrowser 1.0
-
-Sheet {
+Page {
     id: sheet
     property QtObject model
     property int selectedRow
-    property string originalFileName: model.data(sheet.selectedRow, "fileName")
-    acceptButtonText: "Save"
-    rejectButtonText: "Close"
+    property string originalFileName: model.fileName
 
     Component.onCompleted: {
         // we should only enable this if there is something to save, and if
@@ -54,53 +50,50 @@ Sheet {
     function activateSave() {
         console.log("activating save")
         acceptButton.enabled = true
-        rejectButtonText = "Cancel"
+        rejectButton.text = qsTr("Cancel")
     }
 
     function deactivateSave() {
         console.log("deactivating save");
         acceptButton.enabled = false
-        rejectButtonText = "Close"
+        rejectButton.text = qsTr("Close")
     }
 
-    onAccepted: {
-        if (nameField.text != originalFileName) {
-            var ret = model.rename(selectedRow, nameField.text)
+    Flickable {
+        width: parent.width-Theme.itemSpacingSmall*2
+        height: parent.height-Theme.itemSpacingSmall*2-Theme.itemHeightLarge
 
-            if (!ret) {
-                // TODO: show a dialog here
-                console.log("rename failed; but we can't block the sheet closing. TODO! error handling.")
-            }
+        anchors {
+            top: parent.top
+            topMargin: Theme.itemSpacingSmall
+            left: parent.left
+            leftMargin: Theme.itemSpacingSmall
         }
-    }
-
-    content: Flickable {
-        anchors { margins: UiConstants.DefaultMargin; fill:parent }
 
         Column {
             anchors.fill: parent
 
             Item {
                 id: nameContainer
-                height: 60
+                height: Theme.itemHeightMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
 
                 Label {
                     id: nameLabel
-                    text: "Name:"
+                    text: qsTr("Name:")
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UiConstants.DefaultMargin
+                    anchors.rightMargin: Theme.itemSpacingSmall
                 }
 
                 TextField {
                     id: nameField
-                    text: model.data(sheet.selectedRow, "fileName")
-                    placeholderText: "Enter a new name"
+                    text: model.fileName
+                    placeholderText: qsTr("Enter a new name")
                     anchors.right: parent.right
                     anchors.left: nameLabel.right
-                    anchors.leftMargin: UiConstants.DefaultMargin
+                    anchors.leftMargin: Theme.itemSpacingSmall
                     anchors.verticalCenter: parent.verticalCenter
                     // workaround for onTextChange only emitting when preedit is committed
                     inputMethodHints: Qt.ImhNoPredictiveText
@@ -117,21 +110,21 @@ Sheet {
 
             Item {
                 id: pathContainer
-                height: 60
+                height: Theme.itemHeightMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
 
                 Label {
                     id: pathLabel
-                    text: "Path:"
+                    text: qsTr("Path:")
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UiConstants.DefaultMargin
+                    anchors.rightMargin: Theme.itemSpacingSmall
                 }
 
                 Label {
                     id: pathField
-                    text: model.data(sheet.selectedRow, "filePath")
+                    text: model.filePath
                     anchors.right: parent.right
                     anchors.left: pathLabel.right
                     horizontalAlignment: Text.AlignRight
@@ -143,23 +136,23 @@ Sheet {
 
             Item {
                 id: sizeContainer
-                height: 60
+                height: Theme.itemHeightMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.topMargin: UiConstants.DefaultMargin
-                visible: model.data(sheet.selectedRow, "isFile")
+                anchors.topMargin: Theme.itemSpacingSmall
+                visible: model.isFile
 
                 Label {
                     id: sizeLabel
-                    text: "Size:"
+                    text: qsTr("Size:")
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UiConstants.DefaultMargin
+                    anchors.rightMargin: Theme.itemSpacingSmall
                 }
 
                 Label {
                     id: sizeField
-                    text: model.data(sheet.selectedRow, "fileSize")
+                    text: model.fileSize
                     anchors.right: parent.right
                     anchors.left: sizeLabel.right
                     horizontalAlignment: Text.AlignRight
@@ -171,22 +164,22 @@ Sheet {
 
             Item {
                 id: createdContainer
-                height: 60
+                height: Theme.itemHeightMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.topMargin: UiConstants.DefaultMargin
+                anchors.topMargin: Theme.itemSpacingSmall
 
                 Label {
                     id: createdLabel
-                    text: "Created:"
+                    text: qsTr("Created:")
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UiConstants.DefaultMargin
+                    anchors.rightMargin:Theme.itemSpacingSmall
                 }
 
                 Label {
                     id: createdField
-                    text: model.data(sheet.selectedRow, "creationDate")
+                    text: model.creationDate
                     anchors.right: parent.right
                     anchors.left: createdLabel.right
                     horizontalAlignment: Text.AlignRight
@@ -198,28 +191,64 @@ Sheet {
 
             Item {
                 id: modifiedContainer
-                height: 60
+                height: Theme.itemHeightMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.topMargin: UiConstants.DefaultMargin
+                anchors.topMargin: Theme.itemSpacingSmall
 
                 Label {
                     id: modifiedLabel
-                    text: "Last Modified:"
+                    text: qsTr("Last Modified:")
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UiConstants.DefaultMargin
+                    anchors.rightMargin: Theme.itemSpacingSmall
                 }
 
                 Label {
                     id: modifiedField
-                    text: model.data(sheet.selectedRow, "modifiedDate")
+                    text: model.modifiedDate
                     anchors.right: parent.right
                     anchors.left: modifiedLabel.right
                     horizontalAlignment: Text.AlignRight
                     wrapMode: Text.NoWrap
                     elide: Text.ElideRight
                     anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+    }
+
+    Button {
+        id: rejectButton
+        width: parent.width / 2
+        height: Theme.itemHeightLarge
+        text: qsTr("Cancel")
+        anchors {
+            left: parent.left
+            bottom: parent.bottom
+        }
+        onClicked: {
+            pageStack.pop()
+        }
+    }
+
+    Button {
+        id: acceptButton
+        width: parent.width / 2
+        height: Theme.itemHeightLarge
+        text: qsTr("Ok")
+        anchors {
+            left: rejectButton.right
+            bottom: parent.bottom
+        }
+        onClicked: {
+            if (nameField.text != originalFileName) {
+                var ret = false
+                //TODO: rework rename function
+                if (!ret) {
+                    // TODO: show a dialog here
+                    nameField.text = originalFileName
+                    console.log("rename failed; but we can't block the sheet closing. TODO! error handling.")
                 }
             }
         }
