@@ -50,53 +50,18 @@ ListViewItemWithActions {
     width: parent.width
     height: Theme.itemHeightLarge
 
-    actions: Rectangle{
-        id: itemActions
-        height: Theme.itemHeightLarge
-        width: height*2
-
-        color: "transparent"
-
-        Image{
+    actions: [
+        ActionButton{
             id: removeButton
-            width: parent.height*0.6
-            height: width
-
-            source: "image://theme/trash"
-
-            anchors{
-                top: parent.top
-                topMargin: parent.height*0.2
-                left: parent.left
-                leftMargin: parent.height*0.2
-            }
-
-            MouseArea{
-                anchors.fill: parent
-                onClicked: whantRemove(model.filePath)
-            }
-        }
-
-        Image{
+            iconSource: "image://theme/trash"
+            onClicked: whantRemove(model.filePath)
+        },
+        ActionButton{
             id: infoButton
-            width: parent.height*0.6
-            height: width
-
-            source: "image://theme/info"
-
-            anchors{
-                top: parent.top
-                topMargin: parent.height*0.2
-                left: removeButton.right
-                leftMargin: parent.height*0.4
-            }
-
-            MouseArea{
-                anchors.fill: parent
-                onClicked: whantInfo(model)
-            }
+            iconSource: "image://theme/info"
+            onClicked: whantInfo(model)
         }
-    }
+    ]
 
     Text {
         id: fileSize
