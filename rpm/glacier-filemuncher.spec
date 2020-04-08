@@ -1,13 +1,7 @@
 Name:       glacier-filemuncher
-
-%{!?qtc_qmake:%define qtc_qmake %qmake}
-%{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
-%{!?qtc_make:%define qtc_make make}
-%{?qtc_builddir:%define _builddir %qtc_builddir}
-
 Summary:    File Manager for Nemo
 Version:    0.2.1
-Release:    1
+Release:    2
 Group:      Applications/System
 License:    BSD
 URL:        https://github.com/nemomobile-ux/glacier-filemuncher
@@ -19,6 +13,7 @@ Requires:   nemo-qml-plugin-folderlistmodel >= 0.13
 Requires:   libglacierapp
 Requires:   mapplauncherd-booster-nemomobile
 
+BuildRequires:  cmake
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Gui)
@@ -33,16 +28,20 @@ File Manager using Qt Quick Components for Nemo Mobile.
 %setup -q -n %{name}-%{version}
 
 %build
-%qtc_qmake5
-%qtc_make %{?_smp_mflags}
+mkdir build
+cd build
+cmake \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
+	-DCMAKE_VERBOSE_MAKEFILE=ON \
+	..
+cmake --build .
 
 %install
+cd build
 rm -rf %{buildroot}
-%qmake5_install
-
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
+DESTDIR=%{buildroot} cmake --build . --target install
 
 %files
 %defattr(-,root,root,-)
