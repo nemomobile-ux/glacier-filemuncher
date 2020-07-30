@@ -60,22 +60,24 @@ ApplicationWindow {
         }
     }
 
-/*format icons for some file types*/
+    /*format icons for some file types*/
     function formatIcon(object)
     {
         if(object.isDir) {
             return "image://theme/folder-o"
         }
 
-        if(object.mimeType.slice(0, 6) === "image/") {
-            return "image://nemoThumbnail/"+object.fileName
+        if(object.mimeType) {
+            if(object.mimeType.slice(0, 6) === "image/") {
+                return object.iconSource
+            }
+
+            if(object.mimeType === "application/x-rpm") {
+                return "image://theme/box"
+            }
         }
 
-        if(object.mimeType === "application/x-rpm") {
-            return "image://theme/box"
-        }
-
-        console.log(object.mimeType)
+        console.log("mimetype is "+object.mimeType)
 
         return "image://theme/file-o"
     }
