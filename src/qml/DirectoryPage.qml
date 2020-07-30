@@ -52,6 +52,7 @@ Page {
     headerTools:  HeaderToolsLayout {
         id: header
         title: qsTr("File manager")
+        showBackButton: !page.isRootDirectory;
 
         tools: [
             ToolButton {
@@ -61,11 +62,6 @@ Page {
             ToolButton {
                 iconSource: "image://theme/bars"
                 onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
-            },
-            ToolButton{
-                iconSource: "image://theme/chevron-left"
-                onClicked: pageStack.pop()
-                visible: !page.isRootDirectory
             }
         ]
         drawerLevels: [
