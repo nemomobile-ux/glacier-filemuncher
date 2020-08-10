@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2017-2020 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -138,7 +138,11 @@ Page {
             onClicked: {
                 if (model.isDir)
                     window.cdInto(model.filePath)
-                else {
+
+                else if (mimeType.slice(0, 5) === "text/") {
+                  // Open text file
+                    pageStack.push(Qt.resolvedUrl("TextViewPage.qml"), {"viewFile": filePath})
+                } else {
                     page.selectedFilePath = model.filePath
                     openFileDialog.visible = true
                 }

@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017-2020 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2020 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -30,37 +29,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
+import QtQuick 2.6
 
-#include <QGuiApplication>
-#include <QQuickWindow>
-#include <QQuickItem>
-#include <QtQml>
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
 
-#include <glacierapp.h>
-#include "filetools.h"
+import org.nemomobile.glacier.filemuncher 1.0
 
-Q_DECL_EXPORT  int main(int argc, char **argv)
-{
-    QGuiApplication *app = GlacierApp::app(argc, argv);
-    app->setOrganizationName("NemoMobile");
-    app->setApplicationName("glacier-filemuncher");
+Page {
+    id: textViewPage
+    property alias viewFile: fileTools.path
 
-    QQmlApplicationEngine *engine = GlacierApp::engine(app);
-    QQmlContext *context = engine->rootContext();
+    headerTools:  HeaderToolsLayout {
+        id: header
+        title: viewFile
+        showBackButton: true
+    }
 
-    // TODO: we could do with a plugin to access QDesktopServices paths
-    context->setContextProperty("homeDirectory", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    context->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    context->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    Component.onCompleted: {
+        fileTools.loadFileContent()
+    }
 
-    qmlRegisterType<FileTools>("org.nemomobile.glacier.filemuncher",1,0,"FileTools");
+    FileTools{
+        id: fileTools
 
-    QQuickWindow *window = GlacierApp::showWindow();
-    window->setTitle(QObject::tr("Files browser"));
-    window->setIcon(QIcon("/usr/share/glacier-filemuncher/images/icon-app-filemanager.png"));
+        onFileContentChanged: {
+            testo.text = content;
+        }
 
-    return app->exec();
+        onPathChanged: {
+            console.log(path)
+        }
+    }
+
+    TextArea {
+        id:testo
+        anchors.fill: parent
+        readOnly: true
+    }
 }

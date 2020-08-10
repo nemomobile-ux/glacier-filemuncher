@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017-2020 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2020 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -30,37 +29,72 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
-
-#include <QGuiApplication>
-#include <QQuickWindow>
-#include <QQuickItem>
-#include <QtQml>
-
-#include <glacierapp.h>
 #include "filetools.h"
+#include "txtfilereader.h"
 
-Q_DECL_EXPORT  int main(int argc, char **argv)
+#include <QDebug>
+#include <QFile>
+
+FileTools::FileTools(QObject *parent) : QObject(parent)
 {
-    QGuiApplication *app = GlacierApp::app(argc, argv);
-    app->setOrganizationName("NemoMobile");
-    app->setApplicationName("glacier-filemuncher");
 
-    QQmlApplicationEngine *engine = GlacierApp::engine(app);
-    QQmlContext *context = engine->rootContext();
-
-    // TODO: we could do with a plugin to access QDesktopServices paths
-    context->setContextProperty("homeDirectory", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    context->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    context->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-
-    qmlRegisterType<FileTools>("org.nemomobile.glacier.filemuncher",1,0,"FileTools");
-
-    QQuickWindow *window = GlacierApp::showWindow();
-    window->setTitle(QObject::tr("Files browser"));
-    window->setIcon(QIcon("/usr/share/glacier-filemuncher/images/icon-app-filemanager.png"));
-
-    return app->exec();
 }
+
+FileTools::~FileTools()
+{
+    m_workerThread.quit();
+    m_workerThread.wait();
+}
+
+QString FileTools::path() const
+{
+    if(m_path.isEmpty()) {
+        qDebug() << "Path is empty";
+        return QString();
+    }
+
+    return m_path;
+}
+
+void FileTools::loadFileContent()
+{
+    if(m_path.isEmpty()) {
+        return;
+    }
+
+    TxtFileReader *txtLoader = new TxtFileReader;
+    txtLoader->moveToThread(&m_workerThread);
+    connect(&m_workerThread, &QThread::finished, txtLoader, &QObject::deleteLater);
+    connect(txtLoader, &TxtFileReader::resultReady, this, &FileTools::loadFileContentFinished);
+    txtLoader->load(m_path);
+}
+
+void FileTools::loadFileContentFinished(QString content)
+{
+    if(m_fileContent != content) {
+        m_fileContent = content;
+        emit fileContentChanged(m_fileContent);
+    }
+}
+
+void FileTools::setPath(QString path)
+{
+    if(path.isEmpty()) {
+        qDebug() << "Path is empty";
+    }
+
+    QFile file(path);
+    if(!file.exists()) {
+        qDebug() << "File not exists";
+        emit fileNotFound();
+    } else {
+        m_path = path;
+        m_fileContent = "";
+
+        emit pathChanged(path);
+        if(m_fileContent.length() > 0) {
+            emit fileContentChanged(m_fileContent);
+        }
+    }
+}
+

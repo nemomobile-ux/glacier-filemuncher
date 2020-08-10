@@ -29,13 +29,18 @@ desktop.path = /usr/share/applications
 INSTALLS += desktop
 
 # Input
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp \
+    src/filetools.cpp \
+    src/txtfilereader.cpp
 
-HEADERS +=
+HEADERS += \
+    src/filetools.h \
+    src/txtfilereader.h
 
 CONFIG += link_pkgconfig
 
 DISTFILES += \
+    src/qml/TextViewPage.qml \
     src/qml/api/qmldir \
     src/qml/api/FileListDelegate.qml \
     src/qml/api/FilePermissionIndicator.qml \
