@@ -20,4 +20,4 @@ install(DIRECTORY qml
 	PATTERN "api" EXCLUDE)
 install(DIRECTORY qml/api/
 	DESTINATION
-	${CMAKE_INSTALL_LIBDIR}/qt5/qml/org/nemomobile/filemuncher)
+	${CMAKE_INSTALL_LIBDIR}/qt/qml/org/nemomobile/filemuncher)
