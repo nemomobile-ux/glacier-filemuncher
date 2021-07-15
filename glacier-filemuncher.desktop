@@ -2,5 +2,6 @@
 Type=Application
 Name=File Manager
 Icon=/usr/share/glacier-filemuncher/images/icon-app-filemanager.png
-Exec=invoker --type=nemomobile -s /usr/bin/glacier-filemuncher
+Exec=/usr/bin/glacier-filemuncher
 Comment=Nemo File Manager
+Name[ru]=Файлы
