@@ -58,11 +58,11 @@ Page {
             ToolButton {
                 iconSource: "image://theme/refresh"
                 onClicked: dirModel.refresh()
-            },
+            }/*,
             ToolButton {
                 iconSource: "image://theme/bars"
                 onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
-            }
+            }*/
         ]
         drawerLevels: [
             Button {
@@ -81,8 +81,13 @@ Page {
                         });
                     }
                 }
+            },
+            Button {
+                text:  dirModel.showHiddenFiles ? qsTr("Hide hidden files") : qsTr("Show hidden files")
+                onClicked: {
+                    dirModel.showHiddenFiles = !dirModel.showHiddenFiles
+                }
             }
-
         ]
     }
 
@@ -132,6 +137,7 @@ Page {
 
         model: FolderListModel {
             id: dirModel
+            showHiddenFiles: false
         }
         delegate: FileListDelegate {
             icon: formatIcon(model)
@@ -248,7 +254,7 @@ Page {
 
     Connections {
         target: dirModel
-        onError: {
+        function onError(errorTitle, errorMessage) {
             errorDialog.headingText = errorTitle
             errorDialog.subLabelText = errorMessage
             errorDialog.open()

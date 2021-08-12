@@ -47,7 +47,7 @@ ListViewItemWithActions {
     label: model.fileName
     showNext: isDir
 
-    width: parent.width
+    width: parent ? parent.width : 0
     height: Theme.itemHeightLarge
 
     actions: [
