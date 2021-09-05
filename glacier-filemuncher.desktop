@@ -5,3 +5,4 @@ Icon=/usr/share/glacier-filemuncher/images/icon-app-filemanager.png
 Exec=/usr/bin/glacier-filemuncher
 Comment=Nemo File Manager
 Name[ru]=Файлы
+Name[cs]=Soubory
