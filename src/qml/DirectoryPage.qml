@@ -141,6 +141,7 @@ Page {
         }
         delegate: FileListDelegate {
             icon: formatIcon(model)
+            iconColorized: icon.startsWith("image://theme/")
             onClicked: {
                 if (model.isDir)
                     window.cdInto(model.filePath)
