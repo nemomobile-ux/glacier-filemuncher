@@ -109,16 +109,22 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        Label {
+        TextField {
             id: label
             anchors.left: othercontent.right
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             smooth: true
-            color: Theme.textColor
+            textColor: Theme.textColor
             text: dirModel.path
-            elide: Text.ElideLeft
+            onAccepted: {
+                if (text === '') {
+                    dirModel.path = '/'
+                } else {
+                    dirModel.path = text
+                }
+            }
         }
     }
 
