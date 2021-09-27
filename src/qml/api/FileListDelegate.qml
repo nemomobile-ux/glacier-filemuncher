@@ -39,7 +39,6 @@ import QtQuick.Controls.Styles.Nemo 1.0
 ListViewItemWithActions {
     id: delegate
     property bool navigationMode: true
-    property bool selected: false
 
     signal whantRemove(string file)
     signal whantInfo(var model)
