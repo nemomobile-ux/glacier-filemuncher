@@ -67,5 +67,7 @@ Page {
         id:testo
         anchors.fill: parent
         readOnly: true
+        textColor: Theme.textColor
+        font.pixelSize: Theme.fontSizeMedium
     }
 }
