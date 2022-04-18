@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="cs">
 <context>
     <name>DetailViewSheet</name>
     <message>
@@ -76,34 +76,34 @@
         <translation>Zobrazit skryté soubory</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="175"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="182"/>
         <source>No files here</source>
         <translation>Nejsou zde žádné soubory</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="227"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="234"/>
         <source>Open file</source>
         <translation>Otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="229"/>
-        <location filename="../src/qml/DirectoryPage.qml" line="241"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="236"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="248"/>
         <source>Yes</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="230"/>
-        <location filename="../src/qml/DirectoryPage.qml" line="242"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="237"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="249"/>
         <source>No</source>
         <translation>Ne</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="240"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="247"/>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="251"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="258"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/main.cpp" line="62"/>
         <source>Files browser</source>
-        <translation>Průzkumník</translation>
+        <translation>Soubory</translation>
     </message>
 </context>
 </TS>
