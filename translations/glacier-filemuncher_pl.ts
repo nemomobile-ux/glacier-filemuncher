@@ -125,7 +125,7 @@
     <name>QObject</name>
     <message>
         <location filename="../src/main.cpp" line="62"/>
-        <source>Files browser</source>
+        <source>Files</source>
         <translation>Przeglądarka plików</translation>
     </message>
 </context>

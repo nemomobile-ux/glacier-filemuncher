@@ -59,7 +59,7 @@ Q_DECL_EXPORT  int main(int argc, char **argv)
     qmlRegisterType<FileTools>("org.nemomobile.glacier.filemuncher",1,0,"FileTools");
 
     QQuickWindow *window = GlacierApp::showWindow();
-    window->setTitle(QObject::tr("Files browser"));
+    window->setTitle(QObject::tr("Files"));
     window->setIcon(QIcon("/usr/share/glacier-filemuncher/images/icon-app-filemanager.png"));
 
     return app->exec();

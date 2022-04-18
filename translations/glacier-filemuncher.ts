@@ -127,7 +127,7 @@
     <name>QObject</name>
     <message>
         <location filename="../src/main.cpp" line="62"/>
-        <source>Files browser</source>
+        <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

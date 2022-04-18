@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=File Manager
+Name=Files
 Icon=/usr/share/glacier-filemuncher/images/icon-app-filemanager.png
 Exec=/usr/bin/glacier-filemuncher
 Comment=Nemo File Manager
