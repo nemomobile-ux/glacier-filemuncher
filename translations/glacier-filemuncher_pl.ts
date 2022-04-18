@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>DetailViewSheet</name>
     <message>
@@ -76,34 +76,34 @@
         <translation>Pokaż ukryte pliki</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="175"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="182"/>
         <source>No files here</source>
         <translation>Nie ma tutaj plików</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="227"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="234"/>
         <source>Open file</source>
         <translation>Otwórz plik</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="229"/>
-        <location filename="../src/qml/DirectoryPage.qml" line="241"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="236"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="248"/>
         <source>Yes</source>
         <translation>Tak</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="230"/>
-        <location filename="../src/qml/DirectoryPage.qml" line="242"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="237"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="249"/>
         <source>No</source>
         <translation>Nie</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="240"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="247"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../src/qml/DirectoryPage.qml" line="251"/>
+        <location filename="../src/qml/DirectoryPage.qml" line="258"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
