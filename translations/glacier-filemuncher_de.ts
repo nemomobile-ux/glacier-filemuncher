@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/qml/DetailViewSheet.qml" line="201"/>
         <source>Last Modified:</source>
-        <translation>Letzte Veränderung:</translation>
+        <translation>Letzte Änderung:</translation>
     </message>
     <message>
         <location filename="../src/qml/DetailViewSheet.qml" line="239"/>
