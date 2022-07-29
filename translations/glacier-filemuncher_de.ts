@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/qml/DetailViewSheet.qml" line="174"/>
         <source>Created:</source>
-        <translation>Erzeugt:</translation>
+        <translation>Erstellt:</translation>
     </message>
     <message>
         <location filename="../src/qml/DetailViewSheet.qml" line="201"/>
