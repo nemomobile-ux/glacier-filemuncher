@@ -35,9 +35,9 @@
 #include <QDebug>
 #include <QFile>
 
-FileTools::FileTools(QObject *parent) : QObject(parent)
+FileTools::FileTools(QObject* parent)
+    : QObject(parent)
 {
-
 }
 
 FileTools::~FileTools()
@@ -48,7 +48,7 @@ FileTools::~FileTools()
 
 QString FileTools::path() const
 {
-    if(m_path.isEmpty()) {
+    if (m_path.isEmpty()) {
         qDebug() << "Path is empty";
         return QString();
     }
@@ -58,11 +58,11 @@ QString FileTools::path() const
 
 void FileTools::loadFileContent()
 {
-    if(m_path.isEmpty()) {
+    if (m_path.isEmpty()) {
         return;
     }
 
-    TxtFileReader *txtLoader = new TxtFileReader;
+    TxtFileReader* txtLoader = new TxtFileReader;
     txtLoader->moveToThread(&m_workerThread);
     connect(&m_workerThread, &QThread::finished, txtLoader, &QObject::deleteLater);
     connect(txtLoader, &TxtFileReader::resultReady, this, &FileTools::loadFileContentFinished);
@@ -71,7 +71,7 @@ void FileTools::loadFileContent()
 
 void FileTools::loadFileContentFinished(QString content)
 {
-    if(m_fileContent != content) {
+    if (m_fileContent != content) {
         m_fileContent = content;
         emit fileContentChanged(m_fileContent);
     }
@@ -79,12 +79,12 @@ void FileTools::loadFileContentFinished(QString content)
 
 void FileTools::setPath(QString path)
 {
-    if(path.isEmpty()) {
+    if (path.isEmpty()) {
         qDebug() << "Path is empty";
     }
 
     QFile file(path);
-    if(!file.exists()) {
+    if (!file.exists()) {
         qDebug() << "File not exists";
         emit fileNotFound();
     } else {
@@ -92,9 +92,8 @@ void FileTools::setPath(QString path)
         m_fileContent = "";
 
         emit pathChanged(path);
-        if(m_fileContent.length() > 0) {
+        if (m_fileContent.length() > 0) {
             emit fileContentChanged(m_fileContent);
         }
     }
 }
-
