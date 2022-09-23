@@ -3,11 +3,10 @@
 
 #include <QObject>
 
-class TxtFileReader : public QObject
-{
+class TxtFileReader : public QObject {
     Q_OBJECT
 public:
-    explicit TxtFileReader(QObject *parent = nullptr);
+    explicit TxtFileReader(QObject* parent = nullptr);
 
 signals:
     void resultReady(QString result);

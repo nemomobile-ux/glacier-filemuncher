@@ -35,30 +35,30 @@
 #endif
 
 #include <QGuiApplication>
-#include <QQuickWindow>
 #include <QQuickItem>
+#include <QQuickWindow>
 #include <QtQml>
 
-#include <glacierapp.h>
 #include "filetools.h"
+#include <glacierapp.h>
 
-Q_DECL_EXPORT  int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char** argv)
 {
-    QGuiApplication *app = GlacierApp::app(argc, argv);
+    QGuiApplication* app = GlacierApp::app(argc, argv);
     app->setOrganizationName("NemoMobile");
     app->setApplicationName("glacier-filemuncher");
 
-    QQmlApplicationEngine *engine = GlacierApp::engine(app);
-    QQmlContext *context = engine->rootContext();
+    QQmlApplicationEngine* engine = GlacierApp::engine(app);
+    QQmlContext* context = engine->rootContext();
 
     // TODO: we could do with a plugin to access QDesktopServices paths
     context->setContextProperty("homeDirectory", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
     context->setContextProperty("systemAvatarDirectory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
     context->setContextProperty("DocumentsLocation", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 
-    qmlRegisterType<FileTools>("org.nemomobile.glacier.filemuncher",1,0,"FileTools");
+    qmlRegisterType<FileTools>("org.nemomobile.glacier.filemuncher", 1, 0, "FileTools");
 
-    QQuickWindow *window = GlacierApp::showWindow();
+    QQuickWindow* window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Files"));
     window->setIcon(QIcon("/usr/share/glacier-filemuncher/images/icon-app-filemanager.png"));
 
