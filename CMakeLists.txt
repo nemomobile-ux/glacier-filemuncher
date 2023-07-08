@@ -13,18 +13,30 @@ set(CMAKE_INSTALL_PREFIX /usr)
 include(FeatureSummary)
 include(GNUInstallDirs)
 
-set(INSTALL_QML_IMPORT_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qt/qml"
-	CACHE PATH "Custom QML import installation directory")
+function(FindQtInstallQml)
+    find_program(QMAKE NAMES qmake6 qmake)
+    if(NOT QMAKE)
+        message(FATAL_ERROR "qmake not found")
+    endif()
+    execute_process(
+        COMMAND ${QMAKE} -query QT_INSTALL_QML
+        OUTPUT_VARIABLE PROC_RESULT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(QT_INSTALL_QML ${PROC_RESULT} PARENT_SCOPE)
+endfunction()
 
-set(QT_MIN_VERSION "5.6.0")
-find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Gui Qml Quick LinguistTools REQUIRED)
+FindQtInstallQml()
+
+set(QT_MIN_VERSION "6.0.0")
+find_package(Qt6 ${QT_MIN_VERSION} COMPONENTS Gui Qml Quick LinguistTools REQUIRED)
 find_package(Glacier COMPONENTS App REQUIRED)
 
 add_subdirectory(src)
 
 # Translations
 file(GLOB TS_FILES translations/*.ts)
-qt5_add_translation(QM_FILES ${TS_FILES})
+qt_add_translation(QM_FILES ${TS_FILES})
 add_custom_target(translations DEPENDS ${QM_FILES})
 add_dependencies(glacier-filemuncher translations)
 

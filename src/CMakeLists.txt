@@ -8,9 +8,9 @@ set(HEADERS filetools.h
 add_executable(glacier-filemuncher ${SRC} ${HEADERS})
 
 target_link_libraries(glacier-filemuncher
-	Qt5::Gui
-	Qt5::Qml
-	Qt5::Quick
+	Qt6::Gui
+	Qt6::Qml
+	Qt6::Quick
 	Glacier::App)
 
 install(TARGETS glacier-filemuncher RUNTIME
@@ -19,5 +19,5 @@ install(DIRECTORY qml
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-filemuncher
 	PATTERN "api" EXCLUDE)
 install(DIRECTORY qml/api/
-	DESTINATION
-	${INSTALL_QML_IMPORT_DIR}/org/nemomobile/filemuncher)
+	DESTINATION ${QT_INSTALL_QML}/org/nemomobile/filemuncher/
+)
