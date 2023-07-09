@@ -30,16 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
  */
 
-import QtQuick 2.6
+import QtQuick
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo.Controls
+import Nemo.Dialogs
 
-import Nemo.Dialogs 1.0
-
-import org.nemomobile.folderlistmodel 1.0
-import org.nemomobile.filemuncher 1.0
+import org.nemomobile.folderlistmodel
+import org.nemomobile.filemuncher
 
 Page {
     id: page
@@ -116,7 +113,7 @@ Page {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             smooth: true
-            textColor: Theme.textColor
+    //        textColor: Theme.textColor
             text: dirModel.path
             onAccepted: {
                 if (text === '') {

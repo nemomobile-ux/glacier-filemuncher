@@ -6,3 +6,4 @@ moc_*
 *.moc
 qmlfilemuncher
 qrc_data.cpp
+build
