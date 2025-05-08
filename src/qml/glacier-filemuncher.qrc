@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>DetailViewSheet.qml</file>
+        <file>DirectoryPage.qml</file>
+        <file>FilePickerSheet.qml</file>
+        <file>glacier-filemuncher.qml</file>
+        <file>InputSheet.qml</file>
+        <file>TextViewPage.qml</file>
+    </qresource>
+</RCC>

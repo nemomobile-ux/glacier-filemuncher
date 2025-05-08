@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2017-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -31,6 +31,7 @@
  */
 
 import QtQuick
+import Nemo
 import Nemo.Controls
 
 ListViewItemWithActions {
@@ -59,11 +60,10 @@ ListViewItemWithActions {
         }
     ]
 
-    Text {
+    Label {
         id: fileSize
         color: Theme.textColor
         visible: model.isFile
-        font: Theme.fontFamily
         text: model.fileSize
         anchors{
             right: parent.right

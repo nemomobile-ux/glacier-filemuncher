@@ -1,3 +1,5 @@
+set(PROJECT glacier-filemuncher)
+
 set(SRC main.cpp
 	filetools.cpp
 	txtfilereader.cpp)
@@ -5,19 +7,18 @@ set(SRC main.cpp
 set(HEADERS filetools.h
 	txtfilereader.h)
 
-add_executable(glacier-filemuncher ${SRC} ${HEADERS})
+qt_add_resources(RESOURCES qml/${PROJECT}.qrc)
 
-target_link_libraries(glacier-filemuncher
+add_executable(${PROJECT} ${SRC} ${HEADERS} ${RESOURCES}
+    qml/glacier-filemuncher.qrc)
+
+target_link_libraries(${PROJECT}
 	Qt6::Gui
 	Qt6::Qml
 	Qt6::Quick
 	Glacier::App)
 
-install(TARGETS glacier-filemuncher RUNTIME
+install(TARGETS ${PROJECT} RUNTIME
 	DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY qml
-	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-filemuncher
-	PATTERN "api" EXCLUDE)
 install(DIRECTORY qml/api/
-	DESTINATION ${QT_INSTALL_QML}/org/nemomobile/filemuncher/
-)
+	DESTINATION ${QT_INSTALL_QML}/org/nemomobile/filemuncher/)

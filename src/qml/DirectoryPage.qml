@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Robin Burchell <robin+nemo@viroteck.net>
- * Copyright (C) 2017-2020 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2017-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -32,6 +32,7 @@
 
 import QtQuick
 
+import Nemo
 import Nemo.Controls
 import Nemo.Dialogs
 
@@ -55,11 +56,7 @@ Page {
             ToolButton {
                 iconSource: "image://theme/refresh"
                 onClicked: dirModel.refresh()
-            }/*,
-            ToolButton {
-                iconSource: "image://theme/bars"
-                onClicked: (pageMenu.status == DialogStatus.Closed) ? pageMenu.open() : pageMenu.close()
-            }*/
+            }
         ]
         drawerLevels: [
             Button {
@@ -167,7 +164,9 @@ Page {
                 if (component.status == Component.Ready) {
                     // TODO: error handling
                     var detailsSheet = component.createObject(page, {"model": model});
-                    pageStack.push(detailsSheet)
+                    if(detailsSheet != null) {
+                        pageStack.push(detailsSheet)
+                    }
                 }
 
                 console.log(component.errorString())

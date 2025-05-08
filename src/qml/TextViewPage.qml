@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2020-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -30,6 +30,7 @@
  */
 
 import QtQuick
+import Nemo
 import Nemo.Controls
 import org.nemomobile.glacier.filemuncher
 
